@@ -1,0 +1,64 @@
+{
+    "project": "BudgetBasics — NextGen BudgetBee",
+    "description": "Test data used to verify every calculator, validation rule and interactive module. Each case lists the input and the expected on-screen result.",
+    "currency": "PKR (Rs.)",
+    "budgetCalculator_50_30_20": [
+        { "id": "BC-01", "input": { "monthlyIncome": 50000 }, "expected": { "needs": 25000, "wants": 15000, "savings": 10000, "spendPerWeek": 9231, "spendPerDay": 1315, "savedPerYear": 120000, "safetyNet": 75000, "monthsToBuildSafetyNet": 8 } },
+        { "id": "BC-02", "input": { "monthlyIncome": 18000 }, "expected": { "needs": 9000, "wants": 5400, "savings": 3600 } },
+        { "id": "BC-03", "input": { "monthlyIncome": 1234.5 }, "expected": { "needs": 617.25, "wants": 370.35, "savings": 246.9 } },
+        { "id": "BC-04", "input": { "monthlyIncome": "" }, "expected": { "error": "Enter a monthly income to calculate your sample split." } },
+        { "id": "BC-05", "input": { "monthlyIncome": -5 }, "expected": { "error": "Enter a number greater than zero." } },
+        { "id": "BC-06", "input": { "monthlyIncome": 0 }, "expected": { "error": "Enter a number greater than zero.", "previousResultsCleared": true } }
+    ],
+    "savingsGoal": [
+        { "id": "SG-01", "input": { "goalName": "Laptop", "target": 150000, "alreadySaved": 25000, "monthlyContribution": 10000 }, "expected": { "remaining": 125000, "months": 13, "durationLabel": "1y 1m", "progressPercent": 17, "weekly": 2308, "tip": "Save Rs. 12,500 a month instead and you finish 3 months sooner." } },
+        { "id": "SG-02", "input": { "goalName": "Phone", "target": 60000, "alreadySaved": 0, "monthlyContribution": 5000 }, "expected": { "remaining": 60000, "months": 12, "progressPercent": 0 } },
+        { "id": "SG-03", "input": { "goalName": "Books", "target": 1000, "alreadySaved": 1200, "monthlyContribution": 0 }, "expected": { "remaining": 0, "progressPercent": 100, "message": "Target reached. Well done!", "extra": 200 } },
+        { "id": "SG-04", "input": { "goalName": "", "target": 1, "alreadySaved": 1, "monthlyContribution": 1 }, "expected": { "error": "Please complete all four fields to make a goal plan." } },
+        { "id": "SG-05", "input": { "goalName": "Laptop", "target": -100, "alreadySaved": 0, "monthlyContribution": 10 }, "expected": { "error": "Amounts must be numbers of zero or more (no negative values)." } },
+        { "id": "SG-06", "input": { "goalName": "Laptop", "target": 5000, "alreadySaved": 1000, "monthlyContribution": 0 }, "expected": { "error": "Add a monthly contribution greater than zero to estimate a timeline." } }
+    ],
+    "expensePlanner": {
+        "monthlyBudget": 50000,
+        "entries": [
+            { "date": "2026-09-01", "category": "Food", "description": "Groceries", "amount": 6000 },
+            { "date": "2026-09-05", "category": "Transport", "description": "Bus pass", "amount": 3000 },
+            { "date": "2026-09-10", "category": "Shopping", "description": "Shoes", "amount": 9000 }
+        ],
+        "expected": { "totalPlanned": 18000, "balanceLeft": 32000, "budgetUsedPercent": 36, "largest": "Shoes · Rs. 9,000", "biggestCategory": "Shopping (50%)", "needsTotal": 9000, "wantsTotal": 9000, "perDay": 1800, "thirtyDayPace": 54000, "status": "Spending pace is above budget" },
+        "validation": [
+            { "id": "EP-01", "input": { "description": "", "amount": 500 }, "expected": { "error": "Add a date, description, and amount." } },
+            { "id": "EP-02", "input": { "description": "Lunch", "amount": 0 }, "expected": { "error": "Enter an expense amount greater than zero." } }
+        ],
+        "categories": ["Food", "Transport", "Education", "Entertainment", "Shopping", "Utilities", "Miscellaneous"]
+    },
+    "needsVsWants": [
+        { "item": "Textbooks", "expected": "Need" },
+        { "item": "Gaming subscription", "expected": "Want" },
+        { "item": "Groceries", "expected": "Need" },
+        { "item": "Movie ticket", "expected": "Want" }
+    ],
+    "chatbot": [
+        { "question": "What is a need?", "expectedContains": "essential" },
+        { "question": "How much should I save?", "expectedContains": "20%" },
+        { "question": "How do I avoid overspending?", "expectedContains": "24-hour wait" },
+        { "question": "What is 50/30/20?", "expectedContains": "flexible budgeting guideline" },
+        { "question": "Give me a tip based on my spending", "expectedContains": "Based on your expense planner" },
+        { "question": "budget kya hota hai?", "expectedContains": "A budget is a simple plan" },
+        { "question": "What is the weather on Mars?", "expectedContains": "I can help with" }
+    ],
+    "search": [
+        { "query": "saving", "expected": "Results found" },
+        { "query": "needs", "expected": "Results found" },
+        { "query": "expenses", "expected": "Results found" },
+        { "query": "goals", "expected": "Results found" },
+        { "query": "bitcoin", "expected": "No learning topics found" }
+    ],
+    "forms": [
+        { "id": "FB-01", "form": "feedback", "input": { "name": "", "email": "", "rating": "", "comments": "" }, "expected": "Please complete each field before submitting." },
+        { "id": "FB-02", "form": "feedback", "input": { "name": "Ali", "email": "bad", "rating": 5, "comments": "Great learning site" }, "expected": "Please enter a valid email address." },
+        { "id": "FB-03", "form": "feedback", "input": { "name": "Ali", "email": "ali@example.com", "rating": 5, "comments": "short" }, "expected": "Comments must be between 10 and 500 characters." },
+        { "id": "FB-04", "form": "feedback", "input": { "name": "Ali", "email": "ali@example.com", "rating": 5, "comments": "Great learning site" }, "expected": "Thank you, Ali! Your feedback has been received." },
+        { "id": "CT-01", "form": "contact", "input": { "name": "Sara", "email": "sara@example.com", "message": "Hi" }, "expected": "Please write a message with at least 10 characters." }
+    ]
+}

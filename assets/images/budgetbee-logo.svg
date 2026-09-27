@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+  <title id="title">BudgetBee light logo</title>
+  <defs>
+    <clipPath id="bee-body">
+      <path d="M47 66c10-8 26-11 43-9 18 2 32 11 37 24 5 14-3 28-17 36-15 9-39 10-56 3-15-6-23-19-20-32 1-9 6-16 13-22z"/>
+    </clipPath>
+  </defs>
+  <path d="M69 79C55 69 38 58 30 44 21 29 27 13 41 11c16-2 31 14 38 31 7 16 5 29-6 37z" fill="#E9F8F1" stroke="#273247" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M78 77c-1-18 5-40 17-55 10-13 25-13 30 1 6 16-8 37-25 51-9 8-17 9-22 3z" fill="#E9F8F1" stroke="#273247" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M76 68c-3-13-3-24 2-35m11 36c6-16 13-28 23-39" fill="none" stroke="#273247" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="79" cy="29" r="4.5" fill="#273247"/>
+  <circle cx="111" cy="29" r="4.5" fill="#273247"/>
+  <path d="m46 76-25 9 24 12z" fill="#273247"/>
+  <path d="M47 66c10-8 26-11 43-9 18 2 32 11 37 24 5 14-3 28-17 36-15 9-39 10-56 3-15-6-23-19-20-32 1-9 6-16 13-22z" fill="#FFC83D" stroke="#273247" stroke-width="5"/>
+  <g clip-path="url(#bee-body)" fill="#273247">
+    <path d="m51 59 13-2 13 58-13 2z"/>
+    <path d="m77 57 14 1 12 56-14 2z"/>
+  </g>
+  <circle cx="99" cy="77" r="5.5" fill="#273247"/>
+</svg>

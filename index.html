@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="BudgetBasics helps students learn budgeting, saving, smart spending, and financial awareness through interactive tools and simple educational resources.">
+    <meta property="og:title" content="BudgetBasics | NextGen BudgetBee">
+    <meta property="og:description"
+        content="Learn smarter budgeting, build better money habits, and take control of your student finances.">
+    <meta name="theme-color" content="#0D0518">
+    <title>BudgetBasics | NextGen BudgetBee</title>
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%9D%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        html,
+        body {
+            background: #0D0518;
+            color-scheme: dark;
+        }
+    </style>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body class="dark">
+    <script>
+        try {
+            const savedTheme = localStorage.getItem('theme') || localStorage.getItem('budgetbasics-theme');
+            const lightTheme = savedTheme === 'light';
+            document.documentElement.dataset.theme = lightTheme ? 'light' : 'dark';
+            document.body.classList.toggle('dark', !lightTheme);
+        } catch {
+            document.documentElement.dataset.theme = 'dark';
+        }
+    </script>
+    <div class="loading-screen" id="loadingScreen" aria-label="Loading BudgetBasics">
+        <div class="loading-bee"><img data-bee-logo src="assets/images/budgetbee-logo-dark.svg" alt=""></div>
+        <strong>NEXTGEN BUDGETBEE</strong><span class="loading-line"></span>
+    </div>
+    <div class="ambient-scene" id="ambientScene" aria-hidden="true">
+        <span class="ambient-orb orb-violet" data-depth="0.018"></span>
+        <span class="ambient-orb orb-cyan" data-depth="0.032"></span>
+        <span class="ambient-orb orb-lilac" data-depth="0.012"></span>
+        <span class="ambient-sphere sphere-one" data-depth="0.045"></span>
+        <span class="ambient-sphere sphere-two" data-depth="0.025"></span>
+        <span class="ambient-ring ring-one" data-depth="0.04"></span>
+        <span class="ambient-ring ring-two" data-depth="0.02"></span>
+        <div class="ambient-grid"></div>
+        <div class="ambient-particles"><i data-depth="0.006"></i><i data-depth="0.009"></i><i data-depth="0.005"></i><i
+                data-depth="0.008"></i><i data-depth="0.006"></i><i data-depth="0.01"></i><i data-depth="0.005"></i><i
+                data-depth="0.008"></i><i data-depth="0.007"></i><i data-depth="0.006"></i></div>
+    </div>
+    <header class="topbar"><a class="brand" href="#home"><span class="bee"><img data-bee-logo
+                    src="assets/images/budgetbee-logo-dark.svg" alt=""></span><span>Budget<span
+                    class="green">Basics</span><small>NEXTGEN
+                    BUDGETBEE</small></span></a><button id="menuToggle" class="icon-button menu-toggle"
+            aria-label="Open navigation" aria-expanded="false">☰</button>
+        <nav id="mainNav" aria-label="Main navigation"><a href="#home">Home</a><a href="#basics">Basics</a><a
+                href="#needs">Needs vs Wants</a><a href="#rule">50/30/20</a><a href="#savings">Savings</a><a
+                href="#planner">Planner</a><a href="#mistakes">Mistakes</a><a href="#gallery">Infographics</a><a
+                href="#about">About</a><a href="#feedback">Feedback</a><a href="#contact">Contact</a><a
+                href="#chatbot">AI Chatbot</a></nav>
+        <div class="top-actions"><button id="themeToggle" class="icon-button"
+                aria-label="Switch to light mode">◐</button><a class="nav-cta" href="#savings">Start planning
+                <span>↗</span></a></div>
+    </header>
+    <main>
+        <section class="hero section" id="home">
+            <div class="hero-copy">
+                <div class="eyebrow"><span class="pulse"></span> NEXTGEN BUDGETBEE</div>
+                <h1>Your money.<br>Your plan.<br><span class="gradient-text">Your future.</span></h1>
+                <p>Learn smarter budgeting, build better money habits, and take control of your student finances. One
+                    small step can make a big difference.</p>
+                <div class="hero-actions"><a class="button primary" href="#basics">Start learning <span>→</span></a><a
+                        class="button secondary" href="#rule">Try budget calculator</a></div>
+                <div class="hero-note"><span class="avatars">✦　●　✿</span><span>Made for students, by students</span>
+                </div>
+            </div>
+            <div class="hero-art">
+                <div class="bee-sphere" aria-hidden="true"></div>
+                <div class="float-card orbit-card orbit-income"><span class="float-icon">◈</span>
+                    <div><small>MONTHLY INCOME</small><strong>Rs. 50,000</strong></div>
+                </div>
+                <div class="float-card orbit-card orbit-rule"><span class="float-icon">◎</span>
+                    <div><small>YOUR FRAMEWORK</small><strong>50 / 30 / 20</strong></div>
+                </div>
+                <div class="art-orbit orbit-one"></div>
+                <div class="art-orbit orbit-two"></div>
+                <div class="bee-art" aria-label="BudgetBee mascot illustration" role="img">
+                    <div class="bee-wing wing-left"></div>
+                    <div class="bee-wing wing-right"></div>
+                    <div class="bee-body"><span class="bee-stripe"></span><span class="bee-face">◡</span><span
+                            class="bee-eye eyes">•　•</span></div>
+                    <div class="bee-sting"></div>
+                </div>
+                <div class="float-card budget-float"><span class="float-icon">↗</span>
+                    <div><small>THIS MONTH'S PLAN</small><strong>Looking good!</strong></div><span
+                        class="float-check">✓</span>
+                </div>
+                <div class="float-card savings-float"><span class="savings-icon">◎</span>
+                    <div><small>SAVINGS GOAL</small><strong>Rs. 8,500 <em>/ Rs. 15k</em></strong>
+                        <div class="mini-progress"><i></i></div>
+                    </div>
+                </div>
+                <div class="sparkle sp1">✳</div>
+                <div class="sparkle sp2">✦</div>
+            </div>
+            <div class="hero-bottom">
+                <div><strong>50/30/20</strong><small>A simple place to start</small></div>
+                <div><strong>Small steps</strong><small>Build lasting habits</small></div>
+                <div><strong>100% student-first</strong><small>Learn at your own pace</small></div>
+                <div class="clock"><span>LOCAL TIME</span><strong id="liveClock">Loading…</strong></div>
+            </div>
+
+        </section>
+        <aside class="tips-ticker" id="tipsTicker" aria-label="Featured budgeting tips and quick facts">
+            <span class="ticker-label">💡 TIPS &amp; QUICK FACTS</span>
+            <div class="ticker-viewport" id="tickerTrack"></div>
+            <button type="button" class="ticker-toggle" id="tickerToggle" aria-pressed="false"
+                aria-label="Pause tips ticker">❚❚</button>
+        </aside>
+        <section class="section snapshot-section" id="snapshot">
+            <div class="section-heading">
+                <div>
+                    <div class="eyebrow">YOUR MONEY AT A GLANCE</div>
+                    <h2>A sample month, <span class="gradient-text">in balance.</span></h2>
+                </div>
+                <p>Fictional student figures to show how a plan can fit together.</p>
+            </div>
+            <div class="snapshot-grid">
+                <article class="snapshot-card budget-card tilt-card"><span class="snapshot-icon">↗</span><small>MONTHLY
+                        INCOME</small><strong>Rs. 50,000</strong><span>Allowance and part-time work</span><i
+                        class="sparkline spark-a"></i></article>
+                <article class="snapshot-card budget-card tilt-card"><span
+                        class="snapshot-icon">◌</span><small>EXPENSES</small><strong>Rs. 30,000</strong><span>Needs and
+                        planned wants</span><i class="sparkline spark-b"></i></article>
+                <article class="snapshot-card budget-card tilt-card"><span
+                        class="snapshot-icon">◎</span><small>SAVINGS</small><strong>Rs. 10,000</strong><span>Building
+                        toward a goal</span><i class="sparkline spark-c"></i></article>
+                <article class="snapshot-card budget-card tilt-card"><span
+                        class="snapshot-icon">◇</span><small>BALANCE</small><strong>Rs. 10,000</strong><span>Flexible
+                        room in the plan</span><i class="sparkline spark-d"></i></article>
+            </div>
+        </section>
+        <section class="section intro" id="basics">
+            <div class="section-heading">
+                <div>
+                    <div class="eyebrow">THE FOUNDATIONS</div>
+                    <h2>Money basics, <span class="gradient-text">made simple.</span></h2>
+                </div>
+                <p>Understanding where your money goes is the first step to telling it where to go next.</p>
+            </div>
+            <div class="concept-grid">
+                <article class="concept-card"><span class="concept-icon lavender">↙</span>
+                    <h3>Income</h3>
+                    <p>Money you receive from an allowance, part-time work, or a scholarship.</p><span
+                        class="example">Example · Monthly allowance</span>
+                </article>
+                <article class="concept-card"><span class="concept-icon peach">⌂</span>
+                    <h3>Fixed expenses</h3>
+                    <p>Costs that tend to stay the same from month to month.</p><span class="example">Example · Monthly
+                        bus pass</span>
+                </article>
+                <article class="concept-card"><span class="concept-icon mint">⌁</span>
+                    <h3>Variable expenses</h3>
+                    <p>Costs that can change depending on your choices and needs.</p><span class="example">Example ·
+                        Snacks with friends</span>
+                </article>
+                <article class="concept-card"><span class="concept-icon lavender">✓</span>
+                    <h3>Needs</h3>
+                    <p>Essential costs you must cover first, like food, transport to class, and study materials.</p>
+                    <span class="example">Example · Course textbook</span>
+                </article>
+                <article class="concept-card"><span class="concept-icon peach">☆</span>
+                    <h3>Wants</h3>
+                    <p>Optional choices that make life fun but can wait, like upgrades, outings, or streaming.</p><span
+                        class="example">Example · Weekend movie</span>
+                </article>
+                <article class="concept-card"><span class="concept-icon yellow">◉</span>
+                    <h3>Savings</h3>
+                    <p>Money you set aside for a goal, surprise, or future you.</p><span class="example">Example · New
+                        laptop fund</span>
+                </article>
+            </div>
+            <div class="budget-example">
+                <div>
+                    <div class="eyebrow">SAMPLE STUDENT BUDGET</div>
+                    <h3>See a monthly plan in action</h3>
+                    <p>Fictional example based on a Rs. 50,000 monthly income. It matches the sample month above:
+                        Rs. 30,000 expenses, Rs. 10,000 savings and Rs. 10,000 flexible balance.</p><a href="#rule"
+                        class="text-link">Build your own plan →</a>
+                </div>
+                <div class="sample-lines">
+                    <table class="sample-table">
+                        <caption class="sr-only">Sample student monthly budget from a Rs. 50,000 income</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Category</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Share of income</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Education</th>
+                                <td>Need</td>
+                                <td>Rs. 7,000</td>
+                                <td><span class="share-bar"><i style="width:14%"></i></span>14%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Transport</th>
+                                <td>Need</td>
+                                <td>Rs. 5,000</td>
+                                <td><span class="share-bar"><i style="width:10%"></i></span>10%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Food</th>
+                                <td>Need</td>
+                                <td>Rs. 8,000</td>
+                                <td><span class="share-bar"><i style="width:16%"></i></span>16%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Personal &amp; fun</th>
+                                <td>Want</td>
+                                <td>Rs. 10,000</td>
+                                <td><span class="share-bar"><i style="width:20%"></i></span>20%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Savings</th>
+                                <td>Saving</td>
+                                <td>Rs. 10,000</td>
+                                <td><span class="share-bar"><i style="width:20%"></i></span>20%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Flexible balance</th>
+                                <td>Unplanned</td>
+                                <td>Rs. 10,000</td>
+                                <td><span class="share-bar"><i style="width:20%"></i></span>20%</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="row">Total</th>
+                                <td></td>
+                                <td>Rs. 50,000</td>
+                                <td>100%</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="quiz-row">
+                <div>
+                    <div class="eyebrow">QUICK KNOWLEDGE CHECK</div>
+                    <h3>Which one is usually a need?</h3>
+                    <p>Choose an answer to see why.</p>
+                </div>
+                <div class="quiz-options"><button data-quiz="wrong">A new gaming subscription</button><button
+                        data-quiz="right">A textbook for class</button><button data-quiz="wrong">Concert
+                        tickets</button>
+                    <p id="quizFeedback" aria-live="polite"></p>
+                </div>
+            </div>
+        </section>
+        <section class="section needs-section" id="needs">
+            <div class="section-heading">
+                <div>
+                    <div class="eyebrow">PAUSE BEFORE YOU PURCHASE</div>
+                    <h2>Need it or <span class="gradient-text">just want it?</span></h2>
+                </div>
+                <p>There are no bad answers here. Practice spotting the difference and make choices that work for you.
+                </p>
+            </div>
+            <div class="game-panel">
+                <div class="game-top">
+                    <div><span class="game-kicker">QUICK SORT</span>
+                        <h3>What would you choose?</h3>
+                    </div>
+                    <div class="game-score">Score <strong id="gameScore">0 / 0</strong></div>
+                </div>
+                <div class="item-card"><span class="item-emoji" id="itemEmoji">📚</span>
+                    <div><small>NEED OR WANT?</small>
+                        <h3 id="itemName">Textbooks</h3>
+                    </div>
+                    <div class="sort-buttons"><button data-sort="Need" class="need-btn">It's a need</button><button
+                            data-sort="Want" class="want-btn">It's a want</button></div>
+                    <p id="sortFeedback" aria-live="polite">Tap a choice to begin</p>
+                </div>
+                <div class="decision-guide">
+                    <div><span>01</span>
+                        <p>Do I need it?</p>
+                    </div>
+                    <div><span>02</span>
+                        <p>Can I afford it?</p>
+                    </div>
+                    <div><span>03</span>
+                        <p>Can it wait?</p>
+                    </div>
+                    <div><span>04</span>
+                        <p>Does it help my goals?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section rule-section" id="rule">
+            <div class="rule-copy">
+                <div class="eyebrow">A FLEXIBLE STARTING POINT</div>
+                <h2>Meet the <span class="gradient-text">50 / 30 / 20</span> rule.</h2>
+                <p>A simple guideline for thinking about how income might be divided. Your real-life split can look
+                    different, and that is okay.</p>
+                <div class="rule-legend">
+                    <div><i class="dot d-purple"></i><span><b>50%</b> Needs<small>Essentials like food, transport, and
+                                study costs</small></span></div>
+                    <div><i class="dot d-orange"></i><span><b>30%</b> Wants<small>Fun and personal
+                                choices</small></span></div>
+                    <div><i class="dot d-green"></i><span><b>20%</b> Savings<small>Goals and future plans</small></span>
+                    </div>
+                </div>
+            </div>
+            <form class="calculator-card" id="budgetForm" novalidate>
+                <div class="card-head">
+                    <div><span class="card-label">TRY THE CALCULATOR</span>
+                        <h3>Your sample budget</h3>
+                    </div><span class="card-coin">↗</span>
+                </div><label for="incomeInput">Monthly income <span>PKR</span></label>
+                <div class="input-wrap"><span>Rs.</span><input id="incomeInput" type="number" min="0" step="any"
+                        placeholder="e.g. 50,000" inputmode="decimal"></div>
+                <p id="budgetError" class="error" aria-live="polite"></p><button class="button primary full"
+                    type="submit">Calculate my split <span>→</span></button>
+                <div id="budgetResults" class="result-list" aria-live="polite">
+                    <div class="result-row"><span>Needs</span><b>Rs. —</b></div>
+                    <div class="result-row"><span>Wants</span><b>Rs. —</b></div>
+                    <div class="result-row"><span>Savings</span><b>Rs. —</b></div>
+                </div>
+                <div id="budgetDetails" class="calc-details" aria-live="polite" hidden></div><small
+                    class="disclaimer">Educational estimate only. Adjust the split to suit your
+                    circumstances.</small>
+            </form>
+        </section>
+        <section class="section savings-section" id="savings">
+            <div class="section-heading">
+                <div>
+                    <div class="eyebrow">LITTLE BY LITTLE ADDS UP</div>
+                    <h2>Give a goal a <span class="gradient-text">game plan.</span></h2>
+                </div>
+                <p>Turn a big wish into smaller steps you can work toward at your own pace.</p>
+            </div>
+            <div class="savings-layout">
+                <form id="savingsForm" class="savings-form" novalidate>
+                    <div class="field"><label for="goalName">What's your goal?</label><input id="goalName"
+                            placeholder="e.g. A new laptop" maxlength="60"></div>
+                    <div class="field-pair">
+                        <div class="field"><label for="targetAmount">Target amount</label>
+                            <div class="input-wrap"><span>Rs.</span><input id="targetAmount" type="number" min="0"
+                                    step="any" placeholder="150,000"></div>
+                        </div>
+                        <div class="field"><label for="currentAmount">Already saved</label>
+                            <div class="input-wrap"><span>Rs.</span><input id="currentAmount" type="number" min="0"
+                                    step="any" placeholder="25,000"></div>
+                        </div>
+                    </div>
+                    <div class="field"><label for="contribution">Monthly contribution</label>
+                        <div class="input-wrap"><span>Rs.</span><input id="contribution" type="number" min="0"
+                                step="any" placeholder="10,000"></div>
+                    </div>
+                    <p id="savingsError" class="error" aria-live="polite"></p><button class="button primary"
+                        type="submit">Make my plan <span>→</span></button>
+                </form>
+                <div id="savingsResult" class="goal-card">
+                    <div class="goal-spark">✳</div><span class="card-label">YOUR GOAL PREVIEW</span>
+                    <h3>Every rupee has a purpose.</h3>
+                    <p>Enter a goal to see a simple timeline and celebrate how far you have come.</p>
+                    <div class="goal-progress"><span></span></div>
+                    <div class="goal-foot"><span>Progress</span><b>Ready when you are</b></div>
+                    <div class="tip-box">💡 <span><b>Bee's tip</b><br>Try setting aside a small amount as soon as you
+                            receive your income.</span></div>
+                </div>
+            </div>
+        </section>
+        <section class="section planner-section" id="planner">
+            <div class="section-heading">
+                <div>
+                    <div class="eyebrow">A PRIVATE PRACTICE SPACE</div>
+                    <h2>Plan a sample <span class="gradient-text">month.</span></h2>
+                </div>
+                <p>Your entries stay in this browser tab for practice and are cleared when you close it.</p>
+            </div>
+            <div class="planner-card">
+                <div class="planner-summary">
+                    <div><span class="card-label">SAMPLE PLANNER</span>
+                        <h3>Your practice expenses</h3>
+                        <p>Set a monthly budget, then add expenses to see how your plan is tracking. Nothing is sent.
+                        </p>
+                    </div>
+                    <div class="planner-balances">
+                        <div class="balance-box budget-box"><label for="plannerBudget">MONTHLY BUDGET</label>
+                            <div class="input-wrap"><span>Rs.</span><input id="plannerBudget" type="number" min="1"
+                                    step="any" value="50000" inputmode="decimal"></div>
+                        </div>
+                        <div class="balance-box"><small>PLANNED SPENDING</small><strong id="expenseTotal">Rs. 0</strong>
+                        </div>
+                        <div class="balance-box"><small>BALANCE LEFT</small><strong id="remainingBalance">Rs.
+                                50,000</strong></div>
+                    </div>
+                </div>
+                <form id="expenseForm" class="expense-form" novalidate>
+                    <div class="field"><label for="expenseDate">Date</label><input id="expenseDate" type="date"></div>
+                    <div class="field"><label for="expenseCategory">Category</label><select id="expenseCategory">
+                            <option>Food</option>
+                            <option>Transport</option>
+                            <option>Education</option>
+                            <option>Entertainment</option>
+                            <option>Shopping</option>
+                            <option>Utilities</option>
+                            <option>Miscellaneous</option>
+                        </select></div>
+                    <div class="field wide"><label for="expenseDescription">Description</label><input
+                            id="expenseDescription" maxlength="80" placeholder="e.g. Lunch on campus"></div>
+                    <div class="field"><label for="expenseAmount">Amount (PKR)</label><input id="expenseAmount"
+                            type="number" min="0" step="any" placeholder="850"></div><button
+                        class="button primary add-expense" type="submit">+ Add expense</button>
+                    <p class="error expense-error" id="expenseError" aria-live="polite"></p>
+                </form>
+                <div class="expense-tools"><label for="expenseSearch">Search expenses</label><input id="expenseSearch"
+                        type="search" placeholder="Search category or description"><label for="categoryFilter">Filter
+                        category</label><select id="categoryFilter">
+                        <option value="all">All categories</option>
+                        <option>Food</option>
+                        <option>Transport</option>
+                        <option>Education</option>
+                        <option>Entertainment</option>
+                        <option>Shopping</option>
+                        <option>Utilities</option>
+                        <option>Miscellaneous</option>
+                    </select><label for="expenseSort">Sort by</label><select id="expenseSort">
+                        <option value="newest">Newest first</option>
+                        <option value="oldest">Oldest first</option>
+                        <option value="high">Amount: high to low</option>
+                        <option value="low">Amount: low to high</option>
+                    </select><button type="button" class="clear-expenses" id="clearExpenses" disabled>Clear all</button>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseRows">
+                            <tr class="empty-row">
+                                <td colspan="5">Your practice list is empty. Add a sample expense above.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="plannerInsights" class="planner-insights" aria-live="polite"></div>
+                <p class="privacy-note">🔒 Practice data only · Entries stay in this tab, are cleared when you close it,
+                    and are never transmitted. Please do not enter real banking details.</p>
+            </div>
+        </section>
+        <section class="section mistakes-section" id="mistakes">
+            <div class="section-heading">
+                <div>
+                    <div class="eyebrow">LEARN WITHOUT JUDGEMENT</div>
+                    <h2>Money habits to <span class="gradient-text">watch for.</span></h2>
+                </div>
+                <p>Everyone makes money mistakes. Spotting a pattern is how you start changing it.</p>
+            </div>
+            <div class="mistake-list">
+                <details>
+                    <summary><span class="mistake-num">01</span><span><b>Impulse buying</b><small>Purchasing in the heat
+                                of the moment</small></span><i>+</i></summary>
+                    <div class="mistake-content">
+                        <p><b>Student scenario:</b> You see a flash sale and buy shoes you had not planned for.</p>
+                        <p><b>Why it matters:</b> Unplanned purchases can crowd out costs you care about more.</p>
+                        <p><b>Try this:</b> Pause for 24 hours and ask whether you still want it tomorrow.</p>
+                    </div>
+                </details>
+                <details>
+                    <summary><span class="mistake-num">02</span><span><b>Ignoring small expenses</b><small>Little spends
+                                can quietly add up</small></span><i>+</i></summary>
+                    <div class="mistake-content">
+                        <p><b>Student scenario:</b> Daily snacks seem small, but surprise you at month's end.</p>
+                        <p><b>Why it matters:</b> You may lose track of money available for your goals.</p>
+                        <p><b>Try this:</b> Notice a few everyday purchases and set a comfortable weekly limit.</p>
+                    </div>
+                </details>
+                <details>
+                    <summary><span class="mistake-num">03</span><span><b>Late payments</b><small>Forgetting a bill or a
+                                due date</small></span><i>+</i></summary>
+                    <div class="mistake-content">
+                        <p><b>Student scenario:</b> A shared utility contribution slips your mind during exams.</p>
+                        <p><b>Why it matters:</b> It can cause avoidable stress and strain shared arrangements.</p>
+                        <p><b>Try this:</b> Add a reminder to a calendar you already use.</p>
+                    </div>
+                </details>
+                <details>
+                    <summary><span class="mistake-num">04</span><span><b>Unused subscriptions</b><small>Paying for
+                                something you rarely use</small></span><i>+</i></summary>
+                    <div class="mistake-content">
+                        <p><b>Student scenario:</b> A free trial turns into a monthly charge you forgot about.</p>
+                        <p><b>Why it matters:</b> Recurring costs can be easy to overlook in a monthly plan.</p>
+                        <p><b>Try this:</b> Review subscriptions every month and cancel ones you no longer use.</p>
+                    </div>
+                </details>
+                <details>
+                    <summary><span class="mistake-num">05</span><span><b>Spending without a plan</b><small>Deciding
+                                where money goes after it's gone</small></span><i>+</i></summary>
+                    <div class="mistake-content">
+                        <p><b>Student scenario:</b> You spend freely at the start of the month and run short later.</p>
+                        <p><b>Why it matters:</b> Without a rough plan, it is harder to protect money for essentials.
+                        </p>
+                        <p><b>Try this:</b> Give your income a simple plan before the month begins.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+        <section class="section gallery-section" id="gallery">
+            <div class="section-heading">
+                <div>
+                    <div class="eyebrow">QUICK VISUAL LEARNING</div>
+                    <h2>Big ideas, <span class="gradient-text">at a glance.</span></h2>
+                </div>
+                <div class="filter-pills" role="group" aria-label="Filter visual guides"><button type="button"
+                        class="active" data-filter="all" aria-pressed="true">All</button><button type="button"
+                        data-filter="planning" aria-pressed="false">Planning</button><button type="button"
+                        data-filter="saving" aria-pressed="false">Saving</button><button type="button"
+                        data-filter="spending" aria-pressed="false">Spending</button></div>
+            </div>
+            <div class="gallery-grid">
+                <article class="visual-card" data-topic="spending">
+                    <div class="visual-art needs-art" role="img"
+                        aria-label="Two paths compare essential needs with optional wants">
+                        <div>NEEDS <span>● ● ●</span></div><i>↔</i>
+                        <div>WANTS <span>● ●</span></div>
+                    </div>
+                    <h3>Needs vs. wants</h3>
+                    <p>Know what is essential and what is a choice.</p><span class="visual-tag">SPENDING SMARTER</span>
+                </article>
+                <article class="visual-card" data-topic="planning">
+                    <div class="visual-art rule-art" role="img"
+                        aria-label="Three segments represent 50 percent needs, 30 percent wants and 20 percent savings">
+                        <div class="donut"><span>50<br><small>30 · 20</small></span></div>
+                        <div class="donut-labels"><b>50% Needs</b><b>30% Wants</b><b>20% Save</b></div>
+                    </div>
+                    <h3>The 50/30/20 rule</h3>
+                    <p>A flexible guideline for dividing income.</p><span class="visual-tag">PLANNING</span>
+                </article>
+                <article class="visual-card" data-topic="planning">
+                    <div class="visual-art cycle-art" role="img" aria-label="Budget cycle: notice, plan, check, adjust">
+                        <span>NOTICE</span><i>→</i><span>PLAN</span><i>→</i><span>CHECK</span><i>↻</i><span>ADJUST</span>
+                    </div>
+                    <h3>A monthly budget cycle</h3>
+                    <p>Make a plan, check in, and adjust as life changes.</p><span class="visual-tag">PLANNING</span>
+                </article>
+                <article class="visual-card" data-topic="saving">
+                    <div class="visual-art challenge-art" role="img"
+                        aria-label="A staircase illustration represents small regular savings adding up"><span>Rs.
+                            200</span>
+                        <div>╱</div><span>Rs. 500</span>
+                        <div>╱</div><b>GOAL!</b>
+                    </div>
+                    <h3>Small-step saving</h3>
+                    <p>Regular contributions can move a goal forward.</p><span class="visual-tag">SAVING</span>
+                </article>
+                <article class="visual-card" data-topic="spending">
+                    <div class="visual-art category-art" role="img"
+                        aria-label="Four dots represent food, transport, education and personal spending categories">
+                        <span>● FOOD</span><span>● GETTING AROUND</span><span>● LEARNING</span><span>● PERSONAL</span>
+                    </div>
+                    <h3>Expense categories</h3>
+                    <p>Group spending to see where a plan is going.</p><span class="visual-tag">SPENDING SMARTER</span>
+                </article>
+                <article class="visual-card" data-topic="saving">
+                    <div class="visual-art checklist-art" role="img"
+                        aria-label="Checklist: need it, afford it, wait, helps goal"><span>✓ Do I need it?</span><span>✓
+                            Can I afford it?</span><span>○ Can it wait?</span><span>○ Helps my goal?</span></div>
+                    <h3>Smart spending checklist</h3>
+                    <p>Four quick questions before buying.</p><span class="visual-tag">SAVING</span>
+                </article>
+            </div>
+        </section>
+        <section class="section chatbot-section" id="chatbot">
+            <div class="chat-intro">
+                <div class="eyebrow">MEET YOUR LEARNING BUDDY</div>
+                <h2>Ask Budget<span class="gradient-text">Bee.</span></h2>
+                <p>Curious about budgeting? BudgetBee can help with the basics using friendly, prewritten answers.</p>
+                <span class="chat-badge">✦ Rule-based answers · Nothing you type is sent</span>
+                <img class="bee-small" data-bee-logo src="assets/images/budgetbee-logo-dark.svg" alt="BudgetBee">
+            </div>
+            <div class="chat-showcase" role="group" aria-label="Try asking BudgetBee">
+                <span class="card-label">TRY ASKING</span>
+                <button type="button" class="prompt-card" data-prompt="What is a need?"><span
+                        aria-hidden="true">🧺</span><b>What is a need?</b><small>Needs vs wants, explained
+                        simply</small></button>
+                <button type="button" class="prompt-card" data-prompt="How much should I save?"><span
+                        aria-hidden="true">🐖</span><b>How much should I save?</b><small>A realistic starting
+                        point</small></button>
+                <button type="button" class="prompt-card" data-prompt="How do I avoid overspending?"><span
+                        aria-hidden="true">🛑</span><b>How do I avoid overspending?</b><small>Habits that protect your
+                        plan</small></button>
+                <button type="button" class="prompt-card" data-prompt="Give me a tip based on my spending"><span
+                        aria-hidden="true">💡</span><b>Get a spending tip</b><small>Personalised from your
+                        planner</small></button>
+            </div>
+            <div class="chat-window" id="chatPanel" role="dialog" aria-modal="false" aria-label="BudgetBee chat panel">
+                <div class="chat-header"><span class="chat-avatar"><img data-bee-avatar
+                            src="assets/images/budgetbee-avatar-dark.svg" alt=""></span>
+                    <div><b>BudgetBee</b><small><i class="online-dot"></i> Online · Your Student Budget
+                            Assistant</small></div>
+                    <button class="chat-header-action" id="clearChat" type="button" aria-label="Clear conversation"
+                        title="Clear conversation">↺</button>
+                    <button class="chat-header-action" id="chatMinimize" type="button" aria-label="Minimize BudgetBee"
+                        title="Minimize">−</button>
+                    <button class="icon-button chat-close" id="chatClose" aria-label="Close BudgetBee">&times;</button>
+                </div>
+                <div class="chat-messages" id="chatMessages" aria-live="polite">
+                    <div class="message bot-message"><img class="message-avatar" data-bee-avatar
+                            src="assets/images/budgetbee-avatar-dark.svg" alt=""><span class="message-text">Hey! I'm
+                            BudgetBee. I can help you understand budgeting, saving, expenses and the 50/30/20 rule. What
+                            would you like to learn?</span><button class="speak-button" aria-label="Read response aloud"
+                            title="Read response aloud">&#128276; Listen</button><time>Now</time></div>
+                </div>
+                <div class="suggestions" role="group" aria-label="Suggested questions"><button type="button"
+                        data-prompt="What is a need?">What is a need?</button><button type="button"
+                        data-prompt="How much should I save?">How much should I save?</button><button type="button"
+                        data-prompt="How do I avoid overspending?">How do I avoid overspending?</button><button
+                        type="button" data-prompt="What is 50/30/20?">What is 50/30/20?</button><button type="button"
+                        data-prompt="Give me a tip based on my spending">💡 Get a spending tip</button><button
+                        type="button" data-prompt="Open Calculator">Open calculator</button></div>
+                <div class="voice-toolbar"><span id="voiceStatus" role="status" aria-live="polite">Ask BudgetBee
+                        anything</span><label class="voice-choice" for="voiceGender">Voice<select id="voiceGender"
+                            aria-label="Choose BudgetBee voice">
+                            <option value="female">Novai</option>
+                            <option value="male">Leo</option>
+                        </select></label><span class="voice-wave"
+                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span
+                        class="voice-actions"><button type="button" id="muteToggle" aria-pressed="false"
+                            aria-label="Mute speech">&#128276;</button><button type="button" id="stopSpeaking"
+                            aria-label="Stop speaking">&#9632;</button></span></div>
+                <form id="chatForm" class="chat-input"><label class="sr-only" for="chatInput">Ask BudgetBee a
+                        question</label><input id="chatInput" placeholder="Ask BudgetBee..." maxlength="240"><button
+                        type="button" id="micButton" class="mic-button" aria-label="Start voice command"
+                        title="Start voice command">&#127908;</button><button type="submit"
+                        class="ask-button">Ask</button></form>
+                <p class="chat-disclaimer">BudgetBee provides basic educational information and is not professional
+                    financial advice. Microphone permission is controlled by your browser.</p>
+            </div>
+        </section>
+        <section class="section search-section" id="search">
+            <div class="search-inner">
+                <div>
+                    <div class="eyebrow">FIND A TOPIC</div>
+                    <h2>Curiosity, <span class="gradient-text">meet answers.</span></h2>
+                    <p>Search tips, concepts, learning guides, and more.</p>
+                </div>
+                <div class="search-side">
+                    <form id="searchForm" class="search-box"><label class="sr-only" for="searchInput">Search learning
+                            content</label><span>⌕</span><input id="searchInput"
+                            placeholder="Try “saving” or “needs”…"><button type="submit">Search</button></form>
+                    <div class="search-sort"><label for="searchSort">Sort results</label><select id="searchSort">
+                            <option value="relevance">Most relevant</option>
+                            <option value="az">A–Z</option>
+                            <option value="za">Z–A</option>
+                        </select></div>
+                    <div class="search-suggestions" role="group" aria-label="Popular topics">
+                        <span>Popular:</span><button type="button" data-search="budget">Budgeting</button><button
+                            type="button" data-search="needs vs wants">Needs vs wants</button><button type="button"
+                            data-search="50/30/20">50/30/20 rule</button><button type="button"
+                            data-search="savings goals">Savings goals</button><button type="button"
+                            data-search="expenses">Expenses</button><button type="button" data-search="mistakes">Money
+                            mistakes</button><button type="button" data-search="chatbot">Ask BudgetBee</button></div>
+                </div>
+                <div id="searchResults" class="search-results" aria-live="polite"></div>
+            </div>
+        </section>
+        <section class="section about-section" id="about">
+            <div class="about-copy">
+                <div class="eyebrow">A STUDENT-LED PROJECT</div>
+                <h2>About <span class="gradient-text">NEX GEN CODERS.</span></h2>
+                <p>BudgetBasics is a student-focused financial education project created to make everyday money concepts
+                    easier to understand. Our goal is to help fellow students learn, plan, and build confident
+                    habits—one small step at a time.</p>
+                <div class="team-note"><span>✦</span>
+                    <p><b>Built with a learning mindset</b><br>Created as part of the TechWiz 72-hour web development
+                        challenge.</p>
+                </div>
+            </div>
+            <div class="team-grid">
+                <div>01 <b>Noor Fatima</b><small>Team leader</small></div>
+                <div>02 <b>Asfad Mubarak Ali</b><small>Team member</small></div>
+                <div>03 <b>Shanza Zahid</b><small>Team member</small></div>
+                <div>04 <b>Iqbal Tahir</b><small>Team member</small></div>
+                <div>05 <b>Kashaf Zahid</b><small>Team member</small></div>
+            </div>
+        </section>
+        <section class="section feedback-section" id="feedback">
+            <div class="feedback-intro">
+                <div class="eyebrow">HELP US LEARN</div>
+                <h2>How was your <span class="gradient-text">experience?</span></h2>
+                <p>Your feedback helps our student team improve BudgetBasics.</p>
+                <div class="feedback-icon">✎</div>
+            </div>
+            <form class="feedback-form" id="feedbackForm" novalidate>
+                <div class="field-pair">
+                    <div class="field"><label for="feedbackName">Name</label><input id="feedbackName" required
+                            maxlength="80" placeholder="Your name"></div>
+                    <div class="field"><label for="feedbackEmail">Email</label><input id="feedbackEmail" type="email"
+                            required placeholder="you@example.com"></div>
+                </div>
+                <div class="field"><label for="feedbackRating">Rating</label><select id="feedbackRating" required>
+                        <option value="">Choose a rating</option>
+                        <option value="5">★★★★★ Excellent</option>
+                        <option value="4">★★★★☆ Good</option>
+                        <option value="3">★★★☆☆ Okay</option>
+                        <option value="2">★★☆☆☆ Could improve</option>
+                        <option value="1">★☆☆☆☆ Needs work</option>
+                    </select></div>
+                <div class="field"><label for="feedbackComment">Comments <small>(10–500
+                            characters)</small></label><textarea id="feedbackComment" required minlength="10"
+                        maxlength="500" placeholder="What did you learn or enjoy?"></textarea></div>
+                <p id="feedbackMessage" class="form-message" aria-live="polite"></p><button class="button primary"
+                    type="submit">Send feedback <span>→</span></button>
+            </form>
+        </section>
+        <section class="section contact-section" id="contact">
+            <div class="section-heading contact-heading">
+                <div>
+                    <div class="eyebrow">SAY HELLO</div>
+                    <h2>Let's keep the <span class="gradient-text">conversation going.</span></h2>
+                    <p>Questions about the project? Reach out to our team during the challenge.</p>
+                </div>
+            </div>
+            <div class="contact-layout">
+                <div class="contact-grid">
+                    <div class="contact-card"><span aria-hidden="true">✉</span><small>EMAIL</small><a
+                            href="mailto:hello@budgetbasics.demo">hello@budgetbasics.demo</a><em>We reply within 24
+                            hours</em></div>
+                    <div class="contact-card"><span aria-hidden="true">☏</span><small>PHONE</small><a
+                            href="tel:+923001234567">+92 300 1234567</a><em>Mon–Fri · 9:00 AM – 5:00 PM (PKT)</em></div>
+                    <div class="contact-card"><span aria-hidden="true">⌖</span><small>ADDRESS</small>
+                        <address>Office 12, Main Boulevard, Gulberg III, Lahore, Punjab 54660, Pakistan</address>
+                        <em>Demo address for this student project</em>
+                    </div>
+                    <div class="contact-card social-card"><span aria-hidden="true">◎</span><small>FOLLOW US</small>
+                        <ul class="social-links">
+                            <li><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram
+                                    ↗<span class="sr-only"> (opens in a new tab)</span></a></li>
+                            <li><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook
+                                    ↗<span class="sr-only"> (opens in a new tab)</span></a></li>
+                            <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn
+                                    ↗<span class="sr-only"> (opens in a new tab)</span></a></li>
+                            <li><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub ↗<span
+                                        class="sr-only"> (opens in a new tab)</span></a></li>
+                        </ul><em>External sites · open in a new tab</em>
+                    </div>
+                </div>
+                <form id="contactForm" class="contact-form" novalidate>
+                    <h3>Send the team a note</h3>
+                    <div class="field-pair">
+                        <div class="field"><label for="contactName">Name</label><input id="contactName" required
+                                maxlength="80" placeholder="Your name"></div>
+                        <div class="field"><label for="contactEmail">Email</label><input id="contactEmail" type="email"
+                                required placeholder="you@example.com"></div>
+                    </div>
+                    <div class="field"><label for="contactMessageInput">Message</label><textarea
+                            id="contactMessageInput" required minlength="10" maxlength="500"
+                            placeholder="How can we help?"></textarea></div>
+                    <p id="contactMessage" class="form-message" aria-live="polite"></p><button class="button primary"
+                        type="submit">Send a demo message <span>→</span></button><small class="disclaimer">Client-side
+                        demo
+                        only. Messages are not sent or stored.</small>
+                </form>
+            </div>
+        </section>
+        <section class="section sitemap-section" id="sitemap">
+            <div class="eyebrow">FIND YOUR WAY AROUND</div>
+            <h2>Explore <span class="gradient-text">BudgetBasics.</span></h2>
+            <div class="sitemap-links"><a href="#home">Home</a><a href="#basics">Budgeting Basics</a><a
+                    href="#needs">Needs vs Wants</a><a href="#rule">50/30/20 Rule</a><a href="#savings">Savings
+                    Goals</a><a href="#planner">Expense Planner</a><a href="#mistakes">Money Mistakes</a><a
+                    href="#gallery">Infographics</a><a href="#chatbot">AI Chatbot</a><a href="#about">About Us</a><a
+                    href="#feedback">Feedback</a><a href="#contact">Contact Us</a></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="footer-about"><a class="brand footer-brand" href="#home"><span class="bee"><img data-bee-logo
+                            src="assets/images/budgetbee-logo-dark.svg" alt=""></span><span>Budget<span
+                            class="green">Basics</span><small>NEXTGEN BUDGETBEE</small></span></a>
+                <p style="margin-top: 10px;">A student-friendly guide to budgeting, saving, and making informed money
+                    choices.</p>
+                <span class="footer-project">A student project by NEX GEN CODERS</span>
+            </div>
+            <nav class="footer-links" aria-label="Footer learning links">
+                <h3>Explore</h3>
+                <a href="#basics">Budgeting basics</a><a href="#needs">Needs vs wants</a><a href="#rule">50/30/20
+                    calculator</a><a href="#savings">Savings goals</a><a href="#planner">Expense planner</a><a
+                    href="#chatbot">Ask BudgetBee</a>
+            </nav>
+            <nav class="footer-links" aria-label="Footer project links">
+                <h3>Project</h3>
+                <a href="#about">About the team</a><a href="#feedback">Share feedback</a><a
+                    href="#contact">Contact</a><a href="#sitemap">Full site map</a><span>Static browser-only demo</span>
+            </nav>
+            <div class="footer-info">
+                <div class="footer-stat"><span class="card-label">SIMULATED VISITORS TODAY</span><b
+                        id="visitorCount">1,284</b><small>Demo counter · stored on this device</small></div>
+                <div class="footer-time"><span class="card-label">YOUR LOCAL TIME</span><b id="footerClock">—</b></div>
+                <p>Planner examples and theme settings stay in this browser. Forms are demo-only and are not submitted.
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom"><span>© <span id="footerYear">2026</span> NEX GEN CODERS · BudgetBasics — NextGen
+                BudgetBee</span><span>For learning only · Not financial advice · <a href="#sitemap">Sitemap</a></span>
+        </div>
+    </footer>
+    <button id="chatLauncher" class="chat-launcher" aria-label="Open BudgetBee" aria-expanded="false"
+        aria-controls="chatPanel"><span class="launcher-mark"><img class="launcher-logo" data-bee-logo
+                src="assets/images/budgetbee-logo-dark.svg" alt=""></span><b>Ask BudgetBee</b><i class="chat-notice"
+            aria-hidden="true">1</i><span class="launcher-tip">Need help? Ask BudgetBee</span></button>
+    <button id="backTop" class="back-top" aria-label="Back to top">↑</button>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./assets/js/content.js" defer></script>
+    <script src="./assets/js/Nexgen.js" defer></script>
+</body>
+
+</html>

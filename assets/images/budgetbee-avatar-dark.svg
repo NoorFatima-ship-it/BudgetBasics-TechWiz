@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">BudgetBee dark avatar</title>
+  <defs>
+    <clipPath id="body-clip">
+      <path d="M39 70c7-13 20-18 39-17 20 1 34 12 36 29 2 17-12 30-33 32-21 3-39-6-45-20-4-9-3-17 3-24z"/>
+    </clipPath>
+    <filter id="cyan-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#FFC83D" flood-opacity=".72"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#cyan-glow)">
+    <path d="M61 72C46 67 31 55 28 41 24 27 31 14 43 12 57 10 72 22 77 39c5 15 2 27-6 35z" fill="#75698D" stroke="#A18BE8" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M75 72c-2-18 4-37 16-51 10-12 24-13 31-2 8 12 3 28-7 41-9 11-20 18-34 19z" fill="#75698D" stroke="#A18BE8" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M61 63c-2-15 1-25 9-34m8 36c5-17 13-27 23-34" fill="none" stroke="#35250A" stroke-linecap="round" stroke-width="4"/>
+    <circle cx="71" cy="27" r="5" fill="#F4D66D"/>
+    <circle cx="102" cy="30" r="5" fill="#F4D66D"/>
+    <path d="m40 73-20 11 21 12z" fill="#FFC83D"/>
+    <path d="M39 70c7-13 20-18 39-17 20 1 34 12 36 29 2 17-12 30-33 32-21 3-39-6-45-20-4-9-3-17 3-24z" fill="#21192F" stroke="#A18BE8" stroke-width="3.5"/>
+    <g clip-path="url(#body-clip)">
+      <path d="m54 51 13-1 10 64-13 2z" fill="#FFC83D"/>
+      <path d="m75 52 13 1 10 59-13 2z" fill="#D99B17"/>
+      <path d="m91 57 10 5 8 39-11 6z" fill="#F4D66D"/>
+    </g>
+    <circle cx="99" cy="75" r="5.5" fill="#F4D66D" stroke="#35250A" stroke-width="2"/>
+    <circle cx="97.5" cy="73.5" r="1.5" fill="#FFFFFF"/>
+  </g>
+</svg>
