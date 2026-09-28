@@ -24,6 +24,8 @@
     const perWeek = monthly => monthly * 12 / WEEKS_PER_YEAR;
     const perDay = monthly => monthly * 12 / DAYS_PER_YEAR;
 
+    // YYYY-MM-DD in the visitor's own time zone (toISOString would give the UTC date, a day off near midnight).
+    const localISODate = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     const monthYear = date => new Intl.DateTimeFormat('en-PK', { month: 'short', year: 'numeric' }).format(date);
     const monthsFromNow = months => { const now = new Date(); return new Date(now.getFullYear(), now.getMonth() + months, 1); };
     const shortDuration = months => {
@@ -132,7 +134,7 @@
         $('#footerYear').textContent = String(new Date().getFullYear());
 
         // Simulated visitor counter: a daily number kept only on this device.
-        const key = 'budgetbasics-visits-' + new Date().toISOString().slice(0, 10);
+        const key = 'budgetbasics-visits-' + localISODate();
         const count = Math.min(999999, Number(storage.get('localStorage', key)) || 1283) + 1;
         storage.set('localStorage', key, String(count));
         $('#visitorCount').textContent = count.toLocaleString();
@@ -395,6 +397,8 @@
             const fail = (message, field) => {
                 error.textContent = message;
                 result.innerHTML = emptyPreview;
+                // The saved preview may hold the other theme's bee; match the current theme.
+                $$('[data-bee-logo]', result).forEach(image => { image.src = `assets/images/budgetbee-logo${document.body.classList.contains('dark') ? '-dark' : ''}.svg`; });
                 field?.setAttribute('aria-invalid', 'true');
                 field?.focus();
             };
@@ -490,7 +494,7 @@
             const total = this.total();
             $('#expenseTotal').textContent = money(total);
             $('#remainingBalance').textContent = money(this.budget - total);
-            $('#clearExpenses').disabled = !this.expenses.length;
+            ['#clearExpenses', '#printPlan', '#downloadPlan'].forEach(id => { $(id).disabled = !this.expenses.length; });
             renderPlannerInsights(total);
             this.save();
         }
@@ -510,14 +514,11 @@
         return tip ? `${tip} (${top[0]} is ${share.toFixed(0)}% of your planned spending.)` : null;
     }
 
-    function renderPlannerInsights(total) {
-        const box = $('#plannerInsights'), expenses = planner.expenses, budget = planner.budget;
-        if (!expenses.length) {
-            box.innerHTML = '<p class="insights-empty">Add a few expenses to see budget usage, spending pace, a category breakdown, a 50/30/20 check and a personal tip.</p>';
-            return;
-        }
+    // Every figure about the current plan, shared by the on-screen stats, the printout and the CSV.
+    function planSummary() {
+        const expenses = planner.expenses, budget = planner.budget, total = planner.total();
         const remaining = budget - total, used = total / budget * 100;
-        const largest = expenses.reduce((top, expense) => expense.amount > top.amount ? expense : top);
+        const largest = expenses.reduce((top, expense) => expense.amount > top.amount ? expense : top, expenses[0]);
         const days = expenses.map(expense => dayNumber(expense.date)).filter(day => day !== null);
         const span = days.length ? Math.max(...days) - Math.min(...days) + 1 : 1;
         const daily = total / span, projected = daily * 30;
@@ -525,18 +526,28 @@
             : used >= 80 ? ['close', 'Getting close to your limit']
             : projected > budget ? ['close', 'Spending pace is above budget']
             : ['ok', 'On track'];
-        const categories = planner.byCategory();
         const needs = expenses.filter(expense => NEEDS_CATEGORIES.includes(expense.category)).reduce((sum, expense) => sum + expense.amount, 0);
-        const guide = [['Needs', needs, 50], ['Wants', total - needs, 30], ['Savings', Math.max(0, remaining), 20]];
+        const guide = [['Needs', needs, 50], ['Wants', total - needs, 30], ['Savings', Math.max(0, remaining), 20]].map(([label, amount, target], index) => {
+            const share = amount / budget * 100;
+            return { label, amount, target, share, fits: index === 2 ? share >= target : share <= target };
+        });
+        return { expenses, budget, total, remaining, used, largest, span, daily, projected, tone, statusText, categories: planner.byCategory(), guide };
+    }
+
+    function renderPlannerInsights(total) {
+        const box = $('#plannerInsights');
+        if (!planner.expenses.length) {
+            box.innerHTML = '<p class="insights-empty">Add a few expenses to see budget usage, spending pace, a category breakdown, a 50/30/20 check and a personal tip.</p>';
+            return;
+        }
+        const { expenses, remaining, used, largest, span, daily, projected, tone, statusText, categories, guide } = planSummary();
 
         const categoryRows = categories.map(([name, entry]) => {
             const share = entry.amount / total * 100;
             return barRow(`${escapeHtml(name)} <small>${entry.count}×</small>`, `${money(entry.amount)} <small>${share.toFixed(0)}%</small>`, share);
         }).join('');
-        const guideRows = guide.map(([label, amount, target], index) => {
-            const share = amount / budget * 100, fits = index === 2 ? share >= target : share <= target;
-            return barRow(`${label} <small>${fits ? '✓' : '!'} ${target}% guide</small>`, `${money(amount)} <small>${share.toFixed(0)}%</small>`, share, target);
-        }).join('');
+        const guideRows = guide.map(({ label, amount, target, share, fits }) =>
+            barRow(`${label} <small>${fits ? '✓' : '!'} ${target}% guide</small>`, `${money(amount)} <small>${share.toFixed(0)}%</small>`, share, target)).join('');
 
         box.innerHTML = `<div class="insights-head"><div><span class="card-label">PLAN STATS</span><h4>How your month is tracking</h4></div><span class="status-pill status-${tone}">${statusText}</span></div>
             <div class="usage usage-${tone}"><div class="bar-track"><i style="width:${Math.min(100, used).toFixed(1)}%"></i></div><div class="usage-foot"><span>${used.toFixed(0)}% used · 30-day pace ${rounded(projected)}</span><b>${remaining >= 0 ? `${money(remaining)} left` : `${money(-remaining)} over`}</b></div></div>
@@ -554,10 +565,97 @@
             <p class="calc-assumptions">Per day = total ÷ days from first to last entry. 30-day pace = per day × 30. Needs = Food, Transport, Education and Utilities; other categories count as wants.</p>`;
     }
 
+    /* Save the plan: a print-ready report (print or "Save as PDF") and a CSV file that opens in Excel.
+       Both are built in the browser from the session's entries; nothing is uploaded anywhere. */
+
+    const todayLabel = () => new Intl.DateTimeFormat('en-PK', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
+    const fileDate = () => localISODate();
+
+    function buildPlanReport() {
+        const s = planSummary();
+        const byDate = [...s.expenses].sort((a, b) => a.date.localeCompare(b.date));
+        const rows = byDate.map(expense => `<tr><td>${escapeHtml(expense.date)}</td><td>${escapeHtml(expense.category)}</td><td>${escapeHtml(expense.description)}</td><td class="num">${money(expense.amount)}</td></tr>`).join('');
+        const categoryRows = s.categories.map(([name, entry]) => `<tr><td>${escapeHtml(name)}</td><td class="num">${entry.count}</td><td class="num">${money(entry.amount)}</td><td class="num">${(entry.amount / s.total * 100).toFixed(0)}%</td></tr>`).join('');
+        const guideRows = s.guide.map(g => `<tr><td>${g.label}</td><td class="num">${money(g.amount)}</td><td class="num">${g.share.toFixed(0)}%</td><td class="num">${g.target}%</td><td>${g.fits ? '✓ ' + (g.label === 'Savings' ? 'Meets' : 'Within') : '! ' + (g.label === 'Savings' ? 'Below' : 'Above')} guide</td></tr>`).join('');
+        return `<header class="report-head"><div><h1>BudgetBasics · Monthly plan</h1><p>Prepared on ${todayLabel()} · Practice plan for learning, not financial advice</p></div><span class="report-status">${escapeHtml(s.statusText)}</span></header>
+            <section class="report-summary">
+                <div><small>Monthly budget</small><b>${money(s.budget)}</b></div>
+                <div><small>Planned spending</small><b>${money(s.total)}</b></div>
+                <div><small>${s.remaining >= 0 ? 'Balance left' : 'Over budget'}</small><b>${money(Math.abs(s.remaining))}</b></div>
+                <div><small>Budget used</small><b>${s.used.toFixed(0)}%</b></div>
+                <div><small>Per day</small><b>${rounded(s.daily)}</b></div>
+                <div><small>30-day pace</small><b>${rounded(s.projected)}</b></div>
+            </section>
+            <h2>Expenses (${s.expenses.length})</h2>
+            <table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th class="num">Amount</th></tr></thead><tbody>${rows}</tbody>
+                <tfoot><tr><th colspan="3">Total</th><th class="num">${money(s.total)}</th></tr></tfoot></table>
+            <div class="report-grid">
+                <div><h2>By category</h2><table><thead><tr><th>Category</th><th class="num">Entries</th><th class="num">Amount</th><th class="num">Share</th></tr></thead><tbody>${categoryRows}</tbody></table></div>
+                <div><h2>50 / 30 / 20 check</h2><table><thead><tr><th>Part</th><th class="num">Amount</th><th class="num">Of budget</th><th class="num">Guide</th><th>Result</th></tr></thead><tbody>${guideRows}</tbody></table></div>
+            </div>
+            <p class="report-tip"><b>BudgetBee tip:</b> ${escapeHtml(spendingTip() || '')}</p>
+            <p class="report-note">Per day = total ÷ days from first to last entry (${plural(s.span, 'day')}). 30-day pace = per day × 30. Needs = Food, Transport, Education and Utilities; other categories count as wants. Educational estimate only.</p>`;
+    }
+
+    function printPlan() {
+        if (!planner.expenses.length) return;
+        let report = $('#printReport');
+        if (!report) {
+            report = document.createElement('article');
+            report.id = 'printReport';
+            report.className = 'print-report';
+            document.body.append(report);
+        }
+        report.innerHTML = buildPlanReport();
+        document.body.classList.add('printing-plan');
+        const done = () => document.body.classList.remove('printing-plan');
+        window.addEventListener('afterprint', done, { once: true });
+        window.print();
+        setTimeout(done, 1000);   // fallback for browsers that do not fire afterprint
+    }
+
+    function downloadPlanCsv() {
+        if (!planner.expenses.length) return;
+        const s = planSummary();
+        // Quote every cell and double inner quotes so commas or quotes in a description stay in one column.
+        const cell = value => `"${String(value).replace(/"/g, '""')}"`;
+        const line = values => values.map(cell).join(',');
+        const lines = [
+            line(['BudgetBasics monthly plan', `Prepared ${fileDate()}`]),
+            '',
+            line(['Date', 'Category', 'Description', 'Amount (PKR)']),
+            ...[...s.expenses].sort((a, b) => a.date.localeCompare(b.date)).map(e => line([e.date, e.category, e.description, e.amount])),
+            '',
+            line(['Monthly budget', s.budget]),
+            line(['Planned spending', s.total]),
+            line([s.remaining >= 0 ? 'Balance left' : 'Over budget', Math.abs(s.remaining)]),
+            line(['Budget used (%)', s.used.toFixed(1)]),
+            line(['Status', s.statusText]),
+            '',
+            line(['Category', 'Entries', 'Amount (PKR)', 'Share (%)']),
+            ...s.categories.map(([name, entry]) => line([name, entry.count, entry.amount, (entry.amount / s.total * 100).toFixed(1)])),
+            '',
+            line(['50/30/20 part', 'Amount (PKR)', 'Of budget (%)', 'Guide (%)']),
+            ...s.guide.map(g => line([g.label, g.amount, g.share.toFixed(1), g.target]))
+        ];
+        // The byte-order mark makes Excel read the file as UTF-8.
+        const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `budgetbasics-plan-${fileDate()}.csv`;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+        toast('Plan downloaded as a CSV file.');
+    }
+
     function initPlanner() {
         planner.load();
+        $('#printPlan').addEventListener('click', printPlan);
+        $('#downloadPlan').addEventListener('click', downloadPlanCsv);
         const form = $('#expenseForm'), error = $('#expenseError'), submit = $('#expenseForm button[type="submit"]');
-        $('#expenseDate').value = new Date().toISOString().slice(0, 10);
+        $('#expenseDate').value = localISODate();
         $('#plannerBudget').value = String(planner.budget);
 
         const resetForm = () => {
@@ -570,8 +668,10 @@
         form.addEventListener('submit', event => {
             event.preventDefault();
             const date = $('#expenseDate').value, category = $('#expenseCategory').value;
-            const description = $('#expenseDescription').value.trim(), amountText = $('#expenseAmount').value.trim();
-            if (!date || !description || !amountText) { error.textContent = 'Add a date, description, and amount.'; return; }
+            const amountText = $('#expenseAmount').value.trim();
+            // Description is optional; an empty one falls back to the category name.
+            const description = $('#expenseDescription').value.trim() || `${category} expense`;
+            if (!date || !amountText) { error.textContent = 'Add a date and an amount.'; return; }
             if (!isNonNegativeNumber(amountText) || Number(amountText) <= 0) { error.textContent = 'Enter an expense amount greater than zero.'; return; }
             const record = { id: planner.editingId || (globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`), date, category, description, amount: Number(amountText) };
             if (planner.editingId) {
@@ -912,6 +1012,89 @@
         });
     }
 
+    /* ---------- Custom cursor (mouse and trackpad only) ---------- */
+
+    // A dot that follows the pointer exactly and a ring that trails it. The ring grows over
+    // anything clickable and steps aside over text fields so the normal text caret shows.
+    // It switches on at the first real mouse/pen movement (not a media query, which many
+    // touchscreen laptops misreport) and hands back the normal cursor on touch.
+    // Reduced-motion users get no trailing.
+    function initCustomCursor() {
+        const root = document.documentElement;
+        const dot = document.createElement('div'), ring = document.createElement('div');
+        dot.className = 'cursor-dot';
+        ring.className = 'cursor-ring';
+        dot.setAttribute('aria-hidden', 'true');
+        ring.setAttribute('aria-hidden', 'true');
+        document.body.append(ring, dot);
+
+        document.addEventListener('pointerdown', event => {
+            if (event.pointerType === 'touch') root.classList.remove('has-custom-cursor', 'cursor-visible');
+        }, { passive: true });
+
+        const INTERACTIVE = 'a, button, summary, label, select, [role="button"], [data-prompt], [data-search], [data-filter], [data-quiz], .visual-card, .prompt-card, .concept-card, .snapshot-card, .contact-card';
+        const PRIMARY = '.button.primary, .nav-cta, .ask-button, .add-expense';
+        const TEXT_FIELD = 'input:not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="date"]), textarea, [contenteditable="true"]';
+        const follow = reduceMotion ? 1 : .18;   // ring easing: lower = more trailing
+        const MAGNET = .35;                        // how far the ring is pulled toward a small target's centre
+        let x = -100, y = -100, ringX = -100, ringY = -100, frame = 0;
+        let magnet = null;                         // centre of the small clickable element under the pointer
+
+        const render = () => {
+            frame = 0;
+            // Magnetic feel: over a button or link the ring settles between the pointer and its centre.
+            const aimX = magnet ? x + (magnet.x - x) * MAGNET : x;
+            const aimY = magnet ? y + (magnet.y - y) * MAGNET : y;
+            ringX += (aimX - ringX) * follow;
+            ringY += (aimY - ringY) * follow;
+            dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+            if (Math.abs(aimX - ringX) > .1 || Math.abs(aimY - ringY) > .1) frame = requestAnimationFrame(render);
+        };
+        const request = () => { if (!frame) frame = requestAnimationFrame(render); };
+
+        document.addEventListener('pointermove', event => {
+            if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+            x = event.clientX;
+            y = event.clientY;
+            if (ringX < -50) { ringX = x; ringY = y; }
+            root.classList.add('has-custom-cursor', 'cursor-visible');
+            const target = event.target instanceof Element ? event.target : null;
+            const onText = !!target?.closest(TEXT_FIELD);
+            const onInteractive = !onText && !!target?.closest(INTERACTIVE);
+            const disabled = onInteractive && !!target.closest('button:disabled, [aria-disabled="true"]');
+            // Only small targets (buttons, links, chips) pull the ring; large cards would drag it too far.
+            const hoverEl = onInteractive && !disabled ? target.closest(INTERACTIVE) : null;
+            const box = hoverEl?.getBoundingClientRect();
+            magnet = box && box.width < 360 && box.height < 140 ? { x: box.left + box.width / 2, y: box.top + box.height / 2 } : null;
+            ring.classList.toggle('is-hover', onInteractive && !disabled);
+            ring.classList.toggle('is-primary', onInteractive && !disabled && !!target.closest(PRIMARY));
+            ring.classList.toggle('is-disabled', disabled);
+            root.classList.toggle('cursor-on-text', onText);
+            request();
+        }, { passive: true });
+
+        // Click: the ring presses in and a small ripple pulses out from the click point.
+        document.addEventListener('pointerdown', event => {
+            if (event.pointerType === 'touch' || !root.classList.contains('has-custom-cursor')) return;
+            ring.classList.add('is-pressed');
+            if (reduceMotion) return;
+            const ripple = document.createElement('span');
+            ripple.className = 'cursor-ripple';
+            ripple.setAttribute('aria-hidden', 'true');
+            ripple.style.setProperty('--ripple-pos', `translate3d(${event.clientX}px, ${event.clientY}px, 0)`);
+            document.body.append(ripple);
+            const remove = () => ripple.remove();
+            ripple.addEventListener('animationend', remove, { once: true });
+            setTimeout(remove, 800);
+        });
+        document.addEventListener('pointerup', () => ring.classList.remove('is-pressed'));
+        // Scrolling moves elements under a still pointer, so drop any stale magnet target.
+        window.addEventListener('scroll', () => { if (magnet) { magnet = null; request(); } }, { passive: true });
+        root.addEventListener('pointerleave', () => root.classList.remove('cursor-visible'));
+        window.addEventListener('blur', () => root.classList.remove('cursor-visible'));
+    }
+
     /* ---------- Start ---------- */
 
     initNavigation();
@@ -931,4 +1114,5 @@
     initChatbot();
     initSearch();
     initForms();
+    initCustomCursor();
 })();

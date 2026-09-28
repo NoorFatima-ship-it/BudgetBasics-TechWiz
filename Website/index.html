@@ -25,7 +25,7 @@
             color-scheme: dark;
         }
     </style>
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css?v=20260928f">
 </head>
 
 <body class="dark">
@@ -374,7 +374,7 @@
                         type="submit">Make my plan <span>→</span></button>
                 </form>
                 <div id="savingsResult" class="goal-card">
-                    <div class="goal-spark">✳</div><span class="card-label">YOUR GOAL PREVIEW</span>
+                    <img class="goal-spark goal-bee" data-bee-logo src="assets/images/budgetbee-logo-dark.svg" alt="" aria-hidden="true"><span class="card-label">YOUR GOAL PREVIEW</span>
                     <h3>Every rupee has a purpose.</h3>
                     <p>Enter a goal to see a simple timeline and celebrate how far you have come.</p>
                     <div class="goal-progress"><span></span></div>
@@ -421,7 +421,7 @@
                             <option>Utilities</option>
                             <option>Miscellaneous</option>
                         </select></div>
-                    <div class="field wide"><label for="expenseDescription">Description</label><input
+                    <div class="field wide"><label for="expenseDescription">Description <small>(optional)</small></label><input
                             id="expenseDescription" maxlength="80" placeholder="e.g. Lunch on campus"></div>
                     <div class="field"><label for="expenseAmount">Amount (PKR)</label><input id="expenseAmount"
                             type="number" min="0" step="any" placeholder="850"></div><button
@@ -465,6 +465,14 @@
                     </table>
                 </div>
                 <div id="plannerInsights" class="planner-insights" aria-live="polite"></div>
+                <div class="planner-export" role="group" aria-labelledby="exportTitle">
+                    <div><span class="card-label">SAVE YOUR PLAN</span>
+                        <p id="exportTitle">Print it, save it as a PDF, or download it for Excel.</p>
+                    </div>
+                    <div class="export-actions"><button type="button" class="button primary" id="printPlan" disabled>🖨️
+                            Print / Save PDF</button><button type="button" class="button secondary" id="downloadPlan"
+                            disabled>⬇ Download Excel (CSV)</button></div>
+                </div>
                 <p class="privacy-note">🔒 Practice data only · Entries stay in this tab, are cleared when you close it,
                     and are never transmitted. Please do not enter real banking details.</p>
             </div>
@@ -832,8 +840,8 @@
             aria-hidden="true">1</i><span class="launcher-tip">Need help? Ask BudgetBee</span></button>
     <button id="backTop" class="back-top" aria-label="Back to top">↑</button>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="./assets/js/content.js" defer></script>
-    <script src="./assets/js/Nexgen.js" defer></script>
+    <script src="./assets/js/content.js?v=20260928f" defer></script>
+    <script src="./assets/js/Nexgen.js?v=20260928f" defer></script>
 </body>
 
 </html>

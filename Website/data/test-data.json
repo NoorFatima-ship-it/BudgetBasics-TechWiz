@@ -27,7 +27,8 @@
         ],
         "expected": { "totalPlanned": 18000, "balanceLeft": 32000, "budgetUsedPercent": 36, "largest": "Shoes · Rs. 9,000", "biggestCategory": "Shopping (50%)", "needsTotal": 9000, "wantsTotal": 9000, "perDay": 1800, "thirtyDayPace": 54000, "status": "Spending pace is above budget" },
         "validation": [
-            { "id": "EP-01", "input": { "description": "", "amount": 500 }, "expected": { "error": "Add a date, description, and amount." } },
+            { "id": "EP-01", "input": { "category": "Food", "description": "", "amount": 500 }, "expected": { "added": true, "description": "Food expense" } },
+            { "id": "EP-03", "input": { "description": "Lunch", "amount": "" }, "expected": { "error": "Add a date and an amount." } },
             { "id": "EP-02", "input": { "description": "Lunch", "amount": 0 }, "expected": { "error": "Enter an expense amount greater than zero." } }
         ],
         "categories": ["Food", "Transport", "Education", "Entertainment", "Shopping", "Utilities", "Miscellaneous"]
